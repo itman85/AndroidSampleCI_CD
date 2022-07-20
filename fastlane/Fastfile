@@ -16,7 +16,6 @@
 default_platform(:android)
 
 platform :android do
-
     desc "Lane for distributing app using Firebase App Distributions"
     lane :distribute do
         gradle(task: "clean assembleRelease")
@@ -27,5 +26,4 @@ platform :android do
             groups_file: "FirebaseAppDistributionConfig/groups.txt"
         )
     end
-
 end
