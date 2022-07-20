@@ -18,7 +18,8 @@ object SampleData {
                     "Android Pie (API 28)\n" +
                     "Android 10 (API 29)\n" +
                     "Android 11 (API 30)\n" +
-                    "Android 12 (API 31)\n"
+                    "Android 12 (API 31)\n" +
+                    "Android 13 (API 32)\n"
         ),
         Message(
             "Colleague",
