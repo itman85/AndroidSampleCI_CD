@@ -113,16 +113,3 @@ fun PreviewConversation() {
         Conversation(SampleData.conversationSample)
     }
 }
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AndroidSampleCICDTheme {
-        Greeting("Android")
-    }
-}
