@@ -1,0 +1,25 @@
+# This is a basic workflow that is manually triggered to deploy alpha build to firebase for testing
+name: Test Deployment
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      flavor:
+        description: 'Input flavor to build: dev, prod or both'
+        default: 'both'
+        required: true
+      notes:
+        description: 'Notes for this build (optional)'
+        default: ''
+        required: false
+jobs:
+  build-and-deploy:
+    # The type of runner that the job will run on
+    runs-on: [ ubuntu-latest ]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
