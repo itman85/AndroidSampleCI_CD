@@ -27,3 +27,24 @@ platform :android do
         )
     end
 end
+
+desc "Creates a new debug build as bundle and extracts the universal apk to upload to firebase."
+lane :buildDebug do |options|
+  gradle(
+    task: ":app:bundle",
+    build_type:"Debug",
+    flavor:options[:flavor],
+    flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
+  )
+end
+
+desc "Submit a new alpha build to Firebase App Distribution"
+lane :deployToFirebase do |options|
+  firebase_app_distribution(
+      app: options[:app],
+      groups: "FirebaseAppDistributionConfig/groups.txt",
+      release_notes_file:"FirebaseAppDistributionConfig/release_notes.txt",
+      firebase_cli_token: options[:firebase_cli_token],
+      apk_path: options[:apk_path],
+  )
+end
