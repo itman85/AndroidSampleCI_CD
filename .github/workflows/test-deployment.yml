@@ -6,7 +6,7 @@ on:
     # Inputs the workflow accepts.
     inputs:
       flavor:
-        description: 'Input flavor to build: dev, prod or both'
+        description: 'Input flavor to build: demo, prod or both'
         default: 'both'
         required: true
       notes:
