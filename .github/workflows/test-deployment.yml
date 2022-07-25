@@ -29,3 +29,15 @@ jobs:
         with:
           ruby-version: 2.7.2 # use latest version?
           bundler-cache: true
+
+      - name: Build App For Both Demo and Production
+        if: contains(github.event.inputs.flavor, 'both')
+        run: 'bundle exec fastlane buildDebug flavor:demo && bundle exec fastlane buildDebug flavor:prod'
+
+      - name: Build App For Demo
+        if: contains(github.event.inputs.flavor, 'demo')
+        run: 'bundle exec fastlane buildDebug flavor:demo'
+
+      - name: Build App For Production
+        if: contains(github.event.inputs.flavor, 'prod')
+        run: 'bundle exec fastlane buildDebug flavor:prod'
