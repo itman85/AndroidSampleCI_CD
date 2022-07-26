@@ -47,6 +47,6 @@ jobs:
         run: echo "::set-output name=app-path::$(find . -name '*.aab' -print -quit)"
 
       - name: Deploy build to Firebase
-        run: 'bundle exec fastlane deployToFirebase apk_path:${{ steps.get-app-path.outputs.app-path }} app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b'
+        run: 'bundle exec fastlane deployToFirebase apk_path:app/build/outputs/bundle/debug/apks/universal.apk app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b'
         env:
           FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}

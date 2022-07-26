@@ -36,6 +36,8 @@ lane :buildDebug do |options|
     flavor:options[:flavor],
     flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
   )
+  # call build_universal_apk.rb file which bundles and unzips the debug build
+    build_universal_apk
 end
 
 desc "Submit a new alpha build to Firebase App Distribution"
@@ -45,6 +47,7 @@ lane :deployToFirebase do |options|
       groups: "FirebaseAppDistributionConfig/groups.txt",
       release_notes_file:"FirebaseAppDistributionConfig/release_notes.txt",
       firebase_cli_token: ENV['FIREBASE_CLI_TOKENS'],
+      android_artifact_type:"AAB",
       apk_path: options[:apk_path],
   )
 end
