@@ -41,10 +41,10 @@ end
 desc "Submit a new alpha build to Firebase App Distribution"
 lane :deployToFirebase do |options|
   firebase_app_distribution(
-      app: options[:app],
+      app: options[:app_id],
       groups: "FirebaseAppDistributionConfig/groups.txt",
       release_notes_file:"FirebaseAppDistributionConfig/release_notes.txt",
-      firebase_cli_token: options[:firebase_cli_token],
+      firebase_cli_token: ENV['FIREBASE_CLI_TOKENS'],
       apk_path: options[:apk_path],
   )
 end

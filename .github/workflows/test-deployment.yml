@@ -41,3 +41,8 @@ jobs:
       - name: Build App For Production
         if: contains(github.event.inputs.flavor, 'prod')
         run: 'bundle exec fastlane buildDebug flavor:prod'
+
+      - name: Deploy build to Firebase
+        run: 'bundle exec fastlane deployToFirebase apk_path:../build/outputs/bundle/demoDebug/app-demo-debug.aab app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b'
+        env:
+          FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}
