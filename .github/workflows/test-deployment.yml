@@ -43,7 +43,7 @@ jobs:
       - name: Build Apk from Abb file
         run: >
           bundle exec fastlane buildUniversalApk
-          keystore_path:'../keystores/debug.keystore'
+          keystore_path:'keystores/debug.keystore'
           aab_path:$aab_path
           apk_output_path: ${aab_path%/*}
         env:
