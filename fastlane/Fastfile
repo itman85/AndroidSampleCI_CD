@@ -51,3 +51,17 @@ lane :deployToFirebase do |options|
       android_artifact_path: options[:build_output_path],
   )
 end
+
+desc "Build universal APK from AAB file"
+lane :buildUniversalApk do |options|
+  bundletool(
+    ks_path: options[:keystore_path],
+    ks_password: ENV['keystore_password'],
+    ks_key_alias: ENV['keystore_alias'],
+    ks_key_alias_password: ENV['keystore_alias_password'],
+    bundletool_version: '1.10.0', # For searching a specific version of bundletool visit https://github.com/google/bundletool/releases
+    aab_path: options[:aab_path],
+    apk_output_path: options[:apk_output_path],
+    verbose: true
+  )
+end

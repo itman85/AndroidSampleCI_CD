@@ -40,10 +40,26 @@ jobs:
         id: get-app-path
         run: echo "::set-output name=app-path::$(find . -name '*.aab' -print -quit)"
 
+      - name: Build Apk from Abb file
+        run: >
+          bundle exec fastlane buildUniversalApk
+          keystore_path:'../keystores/debug.keystore'
+          aab_path:$aab_path
+          apk_output_path: ${aab_path%/*}
+        env:
+          keystore_password: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
+          keystore_alias: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
+          keystore_alias_password: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSWORD }}
+          aab_path: ${{ steps.get-app-path.outputs.app-path }}
+
+      - name: Get App Path
+        id: get-apk-path
+        run: echo "::set-output name=apk-path::$(find . -name '*.apk' -print -quit)"
+
       - name: Deploy build to Firebase
         run: >
           bundle exec fastlane deployToFirebase
-          build_output_path:${{ steps.get-app-path.outputs.app-path }}
+          build_output_path:${{ steps.get-apk-path.outputs.apk-path }}
           app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b
         env:
           FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}
