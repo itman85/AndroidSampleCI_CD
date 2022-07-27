@@ -61,6 +61,7 @@ lane :buildUniversalApk do |options|
     ks_key_alias_password: ENV['keystore_alias_password'],
     bundletool_version: '1.10.0', # For searching a specific version of bundletool visit https://github.com/google/bundletool/releases
     aab_path: options[:aab_path],
-    apk_output_path: options[:apk_output_path]
+    apk_output_path: options[:apk_output_path],
+    verbose: true
   )
 end
