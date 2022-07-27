@@ -6,8 +6,10 @@ on:
     # Inputs the workflow accepts.
     inputs:
       flavor:
-        description: 'Input flavor to build: demo, prod or both'
-        default: 'both'
+        description: 'Flavor to build'
+        options:
+          - demo
+          - prod
         required: true
       notes:
         description: 'Notes for this build (optional)'
@@ -30,19 +32,8 @@ jobs:
           ruby-version: 2.7.2 # use latest version?
           bundler-cache: true
 
-      - name: Build App For Both Demo and Production
-        if: contains(github.event.inputs.flavor, 'both')
-        run: |
-          bundle exec fastlane buildDebug flavor:demo 
-          bundle exec fastlane buildDebug flavor:prod
-
-      - name: Build App For Demo
-        if: contains(github.event.inputs.flavor, 'demo')
-        run: 'bundle exec fastlane buildDebug flavor:demo'
-
-      - name: Build App For Production
-        if: contains(github.event.inputs.flavor, 'prod')
-        run: 'bundle exec fastlane buildDebug flavor:prod'
+      - name: Build App
+        run: 'bundle exec fastlane buildDebug flavor:${{ github.event.inputs.flavor }}'
 
       - name: Get App Path
         id: get-app-path
