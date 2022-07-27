@@ -31,13 +31,13 @@ end
 desc "Creates a new debug build as bundle and extracts the universal apk to upload to firebase."
 lane :buildDebug do |options|
   gradle(
-    task: ":app:bundle",
+    task: ":app:assemble",
     build_type:"Debug",
     flavor:options[:flavor],
     flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
   )
   # call build_universal_apk.rb file which bundles and unzips the debug build
-    build_universal_apk
+  #  build_universal_apk
 end
 
 desc "Submit a new alpha build to Firebase App Distribution"
@@ -47,7 +47,7 @@ lane :deployToFirebase do |options|
       groups: "FirebaseAppDistributionConfig/groups.txt",
       release_notes_file:"FirebaseAppDistributionConfig/release_notes.txt",
       firebase_cli_token: ENV['FIREBASE_CLI_TOKENS'],
-      android_artifact_type:"AAB",
-      apk_path: options[:apk_path],
+      android_artifact_type:"APK",
+      apk_path: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
   )
 end
