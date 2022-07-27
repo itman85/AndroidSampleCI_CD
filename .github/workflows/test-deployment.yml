@@ -36,7 +36,7 @@ jobs:
       - name: Build App
         run: 'bundle exec fastlane buildDebug flavor:${{ github.event.inputs.flavor }}'
 
-      - name: Get App Path
+      - name: Get Aab Path
         id: get-app-path
         run: echo "::set-output name=app-path::$(find . -name '*.aab' -print -quit)"
 
@@ -52,7 +52,7 @@ jobs:
           keystore_alias_password: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSWORD }}
           aab_path: ${{ steps.get-app-path.outputs.app-path }}
 
-      - name: Get App Path
+      - name: Get Apk Path
         id: get-apk-path
         run: echo "::set-output name=apk-path::$(find . -name '*.apk' -print -quit)"
 
