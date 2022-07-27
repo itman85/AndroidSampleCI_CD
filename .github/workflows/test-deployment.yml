@@ -6,6 +6,7 @@ on:
     # Inputs the workflow accepts.
     inputs:
       flavor:
+        type: choice
         description: 'Flavor to build'
         options:
           - demo
@@ -46,3 +47,4 @@ jobs:
           app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b
         env:
           FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}
+
