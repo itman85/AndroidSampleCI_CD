@@ -6,8 +6,10 @@ on:
     # Inputs the workflow accepts.
     inputs:
       flavor:
-        description: 'Input flavor to build: demo, prod or both'
-        default: 'both'
+        description: 'Flavor to build'
+        options:
+          - demo
+          - prod
         required: true
       notes:
         description: 'Notes for this build (optional)'
@@ -29,3 +31,18 @@ jobs:
         with:
           ruby-version: 2.7.2 # use latest version?
           bundler-cache: true
+
+      - name: Build App
+        run: 'bundle exec fastlane buildDebug flavor:${{ github.event.inputs.flavor }}'
+
+      - name: Get App Path
+        id: get-app-path
+        run: echo "::set-output name=app-path::$(find . -name '*.apk' -print -quit)"
+
+      - name: Deploy build to Firebase
+        run: >
+          bundle exec fastlane deployToFirebase
+          apk_path:${{ steps.get-app-path.outputs.app-path }}
+          app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b
+        env:
+          FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}
