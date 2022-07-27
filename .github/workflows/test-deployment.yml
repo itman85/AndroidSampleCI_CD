@@ -45,7 +45,7 @@ jobs:
           bundle exec fastlane buildUniversalApk
           keystore_path:'keystores/debug.keystore'
           aab_path:"$aab_path"
-          apk_output_path: "${aab_path%/*}"
+          apk_output_path:"${aab_path%/*}"
         env:
           keystore_password: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
           keystore_alias: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
