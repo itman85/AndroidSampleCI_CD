@@ -18,5 +18,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract branch name
-        run: echo ${GITHUB_REF##*/}
+      - name: Generate release notes
+        run: |
+            input_notes = ${{ github.event.inputs.notes }}
+            if [[ $input_notes != '' ]]; then
+              echo $input_notes
+            else
+              echo echo ${GITHUB_REF##*/}
+            fi
