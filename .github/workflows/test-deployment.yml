@@ -56,10 +56,10 @@ jobs:
       # check if input release notes empty then use branch name instead
       - name: Generate release notes
         run: |
-            if [[ ${{ github.event.inputs.notes }} != '' ]]; then
-              echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
-            else
+            if [ -z "${{ github.event.inputs.notes }}"]; then
               echo echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
+            else
+              echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
             fi
         
 
