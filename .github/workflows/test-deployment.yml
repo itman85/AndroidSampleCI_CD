@@ -60,7 +60,7 @@ jobs:
         run: >
           bundle exec fastlane deployToFirebase
           build_output_path:${{ steps.get-apk-path.outputs.apk-path }}
-          app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b
+          flavor:${{ github.event.inputs.flavor }}
         env:
           FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}
 
