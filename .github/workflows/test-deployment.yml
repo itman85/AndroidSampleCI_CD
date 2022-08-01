@@ -54,14 +54,14 @@ jobs:
 
       # echo text >> will append text to file
       # check if input release notes empty then use branch name instead
+      # todo check branch name if develop/master branch then generate release notes from recent commits message
       - name: Generate release notes
         run: |
             if [ -z "${{ github.event.inputs.notes }}"]; then
-              echo echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
+              echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
             else
               echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
             fi
-        
 
       - name: Get Apk Path
         id: get-apk-path
