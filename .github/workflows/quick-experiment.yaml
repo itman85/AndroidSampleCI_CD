@@ -1,5 +1,5 @@
 # This is a workflow used for quick experiment purposes
-name: Test Deployment
+name: Quick Experiment
 
 on:
   workflow_dispatch:
