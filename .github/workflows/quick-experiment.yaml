@@ -3,6 +3,11 @@ name: Quick Experiment
 
 on:
   workflow_dispatch:
+    inputs:
+      notes:
+        description: 'Notes for this experiment (optional)'
+        default: ''
+        required: false
    
 jobs:
   check:
