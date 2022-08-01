@@ -16,7 +16,7 @@ jobs:
      steps:
       - name: Generate release notes
         run: |
-            if [-z "${{ github.event.inputs.notes }}"]; then
+            if [ -z "${{ github.event.inputs.notes }}"]; then
               echo echo ${GITHUB_REF##*/}
             else
               echo ${{ github.event.inputs.notes }}
