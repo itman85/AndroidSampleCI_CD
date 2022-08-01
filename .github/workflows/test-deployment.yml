@@ -53,11 +53,11 @@ jobs:
           aab_path: ${{ steps.get-app-path.outputs.app-path }}
 
       # echo text >> will append text to file
+      # check if input release notes empty then use branch name instead
       - name: Generate release notes
         run: |
-            input_notes = ${{ github.event.inputs.notes }}
-            if [[ $input_notes != '' ]]; then
-              echo $input_notes > FirebaseAppDistributionConfig/release_notes.txt
+            if [[ ${{ github.event.inputs.notes }} != '' ]]; then
+              echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
             else
               echo echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
             fi
