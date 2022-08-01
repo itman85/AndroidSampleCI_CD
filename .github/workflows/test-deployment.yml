@@ -52,8 +52,16 @@ jobs:
           keystore_alias_password: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSWORD }}
           aab_path: ${{ steps.get-app-path.outputs.app-path }}
 
+      # echo text >> will append text to file
       - name: Generate release notes
-        run: echo ${{ github.event.pull_request.title }} > FirebaseAppDistributionConfig/release_notes.txt # echo with >> will append to file
+        run: |
+            input_notes = ${{ github.event.inputs.notes }}
+            if [[ input_notes != '' ]]; then
+              echo $input_notes > FirebaseAppDistributionConfig/release_notes.txt
+            else
+              echo echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
+            fi
+        
 
       - name: Get Apk Path
         id: get-apk-path
