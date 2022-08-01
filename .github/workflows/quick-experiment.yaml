@@ -14,15 +14,10 @@ jobs:
      runs-on: [ ubuntu-latest ]
      
      steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
       - name: Generate release notes
         run: |
-            input_notes = ${{ github.event.inputs.notes }}
-            if [[ ${input_notes} != '' ]]; then
-              echo ${input_notes}
+            if [[ ${{ github.event.inputs.notes }} != '' ]]; then
+              echo ${{ github.event.inputs.notes }}
             else
               echo echo ${GITHUB_REF##*/}
             fi
