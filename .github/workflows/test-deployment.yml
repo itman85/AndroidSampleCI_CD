@@ -56,7 +56,7 @@ jobs:
       - name: Generate release notes
         run: |
             input_notes = ${{ github.event.inputs.notes }}
-            if [[ input_notes != '' ]]; then
+            if [[ $input_notes != '' ]]; then
               echo $input_notes > FirebaseAppDistributionConfig/release_notes.txt
             else
               echo echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
