@@ -21,8 +21,8 @@ jobs:
       - name: Generate release notes
         run: |
             input_notes = ${{ github.event.inputs.notes }}
-            if [[ $input_notes != '' ]]; then
-              echo $input_notes
+            if [[ ${input_notes} != '' ]]; then
+              echo ${input_notes}
             else
               echo echo ${GITHUB_REF##*/}
             fi
