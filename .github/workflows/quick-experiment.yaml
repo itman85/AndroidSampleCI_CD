@@ -16,8 +16,13 @@ jobs:
      steps:
       - name: Generate release notes
         run: |
-            if [ -z "${{ github.event.inputs.notes }}"]; then
-              echo echo ${GITHUB_REF##*/}
+            echo ${GITHUB_REF}
+            branch_name = ${GITHUB_REF##*/}
+            echo "$branch_name"
+            develop_branch = "develop"
+            master_branch = "master"
+            if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == "setup-test-deployment-workflow" ]]; then
+              echo `git log ${GITHUB_REF} -2 --pretty=%B`
             else
-              echo ${{ github.event.inputs.notes }}
+              echo "wrong branch"
             fi
