@@ -16,7 +16,7 @@ jobs:
      steps:
       - uses: actions/checkout@v3
         with:
-           fetch-depth: 0
+           fetch-depth: 2
 
       - name: Generate release notes
         run: |
@@ -26,7 +26,7 @@ jobs:
             develop_branch="develop"
             master_branch="master"
             if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == "setup-test-deployment-workflow" ]]; then
-              echo $(git log -2 --pretty=%B)
+              echo $(git log -10 --pretty=%B)
             else
               echo "wrong branch"
             fi
