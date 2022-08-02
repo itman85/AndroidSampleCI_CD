@@ -60,7 +60,7 @@ jobs:
             branch_name=${GITHUB_REF##*/}
             if [[ "$branch_name" == "develop" || "$branch_name" == "setup-test-deployment-workflow" || "$branch_name" == *"release/"* ]]; then
               echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
-              echo $(git log -10 --pretty=%B) >> FirebaseAppDistributionConfig/release_notes.txt
+              git log -10 --pretty=tformat:"%s%n" >> FirebaseAppDistributionConfig/release_notes.txt
             else
               if [ -z "${{ github.event.inputs.notes }}"]; then
                 echo $branch_name > FirebaseAppDistributionConfig/release_notes.txt
