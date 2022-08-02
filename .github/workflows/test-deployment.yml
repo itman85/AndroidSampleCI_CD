@@ -58,7 +58,7 @@ jobs:
       - name: Generate release notes
         run: |
             branch_name=${GITHUB_REF##*/}
-            if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
+            if [[ "$branch_name" == "develop" || "$branch_name" == "setup-test-deployment-workflow" || "$branch_name" == *"release/"* ]]; then
               echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
               echo $(git log -10 --pretty=%B) >> FirebaseAppDistributionConfig/release_notes.txt
             else
