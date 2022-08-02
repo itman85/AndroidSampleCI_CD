@@ -52,13 +52,12 @@ jobs:
           keystore_alias_password: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSWORD }}
           aab_path: ${{ steps.get-app-path.outputs.app-path }}
 
-      # echo text >> will append text to file
-      # check if input release notes empty then use branch name instead
-      # todo check branch name if develop/master branch then generate release notes from recent commits message
+      # If branch is develop, master, release/* branch will get log of commits write into release notes
+      # If feature branches: check if input release notes empty then use branch name instead
       - name: Generate release notes
         run: |
             branch_name=${GITHUB_REF##*/}
-            if [[ "$branch_name" == "develop" || "$branch_name" == "setup-test-deployment-workflow" || "$branch_name" == *"release/"* ]]; then
+            if [[ "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
               echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
               git log -10 --pretty=tformat:"- %s" >> FirebaseAppDistributionConfig/release_notes.txt
             else
