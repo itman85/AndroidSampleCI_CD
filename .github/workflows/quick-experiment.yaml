@@ -18,7 +18,7 @@ jobs:
         run: |
             echo ${GITHUB_REF}
             branch_name = ${GITHUB_REF##*/}
-            echo "$branch_name"
+            echo $branch_name
             develop_branch = "develop"
             master_branch = "master"
             if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == "setup-test-deployment-workflow" ]]; then
