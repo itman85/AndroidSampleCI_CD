@@ -25,7 +25,7 @@ jobs:
             echo $branch_name
             develop_branch="develop"
             master_branch="master"
-            if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == "setup-test-deployment-workflow" ]]; then
+            if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
               echo $(git log -10 --pretty=%B)
             else
               echo "wrong branch"

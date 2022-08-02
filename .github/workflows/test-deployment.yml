@@ -57,10 +57,16 @@ jobs:
       # todo check branch name if develop/master branch then generate release notes from recent commits message
       - name: Generate release notes
         run: |
-            if [ -z "${{ github.event.inputs.notes }}"]; then
-              echo ${GITHUB_REF##*/} > FirebaseAppDistributionConfig/release_notes.txt
-            else
+            branch_name=${GITHUB_REF##*/}
+            if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
               echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
+              echo $(git log -10 --pretty=%B) >> FirebaseAppDistributionConfig/release_notes.txt
+            else
+              if [ -z "${{ github.event.inputs.notes }}"]; then
+                echo $branch_name > FirebaseAppDistributionConfig/release_notes.txt
+              else
+                echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
+              fi
             fi
 
       - name: Get Apk Path
