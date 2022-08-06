@@ -16,4 +16,17 @@ jobs:
      steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+           fetch-depth: 0
+
+      - name: Generate release notes
+        run: |
+            echo ${GITHUB_REF}
+            branch_name=${GITHUB_REF##*/}
+            echo $branch_name
+            develop_branch="develop"
+            master_branch="master"
+            if [[ "$branch_name" == "develop" || "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
+              echo $(git log -10 --pretty=%B)
+            else
+              echo "wrong branch"
+            fi

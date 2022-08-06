@@ -33,6 +33,180 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353599743826:android:6531aed34f51fb550f3c8b",
+        "android_client_info": {
+          "package_name": "com.picoder.androidsamplecicd.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78ndZbk-Y2cvgg5zOfKVz21KqgdIa2wU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353599743826:android:2d635bea97c88b820f3c8b",
+        "android_client_info": {
+          "package_name": "com.picoder.androidsamplecicd.demo.alpha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78ndZbk-Y2cvgg5zOfKVz21KqgdIa2wU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353599743826:android:c818eaef9bf8a1b00f3c8b",
+        "android_client_info": {
+          "package_name": "com.picoder.androidsamplecicd.demo.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78ndZbk-Y2cvgg5zOfKVz21KqgdIa2wU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353599743826:android:f7c041bd1bd499ea0f3c8b",
+        "android_client_info": {
+          "package_name": "com.picoder.androidsamplecicd.prod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78ndZbk-Y2cvgg5zOfKVz21KqgdIa2wU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353599743826:android:c2b84b9ae9842e230f3c8b",
+        "android_client_info": {
+          "package_name": "com.picoder.androidsamplecicd.prod.alpha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78ndZbk-Y2cvgg5zOfKVz21KqgdIa2wU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353599743826:android:ddd7007c81fcf0d80f3c8b",
+        "android_client_info": {
+          "package_name": "com.picoder.androidsamplecicd.prod.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78ndZbk-Y2cvgg5zOfKVz21KqgdIa2wU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353599743826-cu1g0tus9qf8bjlf6n91g1etiat2o09n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

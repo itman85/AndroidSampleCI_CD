@@ -30,20 +30,57 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2 # use latest version?
+          ruby-version: 3.0
           bundler-cache: true
 
-      - name: Build App
-        run: 'bundle exec fastlane buildDebug flavor:${{ github.event.inputs.flavor }}'
+      - name: Build App Bundle
+        run: bundle exec fastlane buildDebugBundle flavor:${{ github.event.inputs.flavor }}
 
-      - name: Get App Path
+      - name: Get Aab Path
         id: get-app-path
-        run: echo "::set-output name=app-path::$(find . -name '*.apk' -print -quit)"
+        run: echo "::set-output name=app-path::$(find . -name '*.aab' -print -quit)"
+
+      - name: Build Apk from Abb file
+        run: >
+          bundle exec fastlane buildUniversalApk
+          keystore_path:'keystores/debug.keystore'
+          aab_path:"$aab_path"
+          apk_output_path:"${aab_path%/*}"
+        env:
+          keystore_password: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
+          keystore_alias: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
+          keystore_alias_password: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSWORD }}
+          aab_path: ${{ steps.get-app-path.outputs.app-path }}
+
+      # If branch is develop, master, release/* branch will get log of commits write into release notes
+      # If feature branches: check if input release notes empty then use branch name instead
+      - name: Generate release notes
+        run: |
+            branch_name=${GITHUB_REF##*/}
+            if [[ "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
+              if [ -z "${{ github.event.inputs.notes }}"]; then
+                git log -10 --pretty=tformat:"- %s" > FirebaseAppDistributionConfig/release_notes.txt
+              else
+                echo "- Note: ${{ github.event.inputs.notes }}" > FirebaseAppDistributionConfig/release_notes.txt
+                git log -10 --pretty=tformat:"- %s" >> FirebaseAppDistributionConfig/release_notes.txt
+            else
+              if [ -z "${{ github.event.inputs.notes }}"]; then
+                echo "Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
+              else
+                echo "- Note: ${{ github.event.inputs.notes }}" > FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
+              fi
+            fi
+
+      - name: Get Apk Path
+        id: get-apk-path
+        run: echo "::set-output name=apk-path::$(find . -name '*.apk' -print -quit)"
 
       - name: Deploy build to Firebase
         run: >
           bundle exec fastlane deployToFirebase
-          apk_path:${{ steps.get-app-path.outputs.app-path }}
-          app_id:1:353599743826:android:c818eaef9bf8a1b00f3c8b
+          build_output_path:${{ steps.get-apk-path.outputs.apk-path }}
+          flavor:${{ github.event.inputs.flavor }}
         env:
           FIREBASE_CLI_TOKENS: ${{ secrets.FIREBASE_CLI_TOKENS }}
+

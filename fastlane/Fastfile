@@ -27,3 +27,41 @@ platform :android do
         )
     end
 end
+
+desc "Creates a new debug build as bundle and extracts the universal apk to upload to firebase."
+lane :buildDebugBundle do |options|
+  gradle(
+    task: ":app:bundle",
+    build_type:"Debug",
+    flavor:options[:flavor],
+    flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
+  )
+end
+
+desc "Submit a new debug build to Firebase App Distribution"
+lane :deployToFirebase do |options|
+  # this is app id of debug built type for each flavor
+  appIdMap = { "demo" => "1:353599743826:android:c818eaef9bf8a1b00f3c8b", "prod" => "1:353599743826:android:ddd7007c81fcf0d80f3c8b"}
+  firebase_app_distribution(
+      app: appIdMap[options[:flavor]],
+      groups_file: "FirebaseAppDistributionConfig/groups.txt",
+      release_notes_file:"FirebaseAppDistributionConfig/release_notes.txt",
+      firebase_cli_token: ENV['FIREBASE_CLI_TOKENS'],
+      android_artifact_type:"AAB",
+      android_artifact_path: options[:build_output_path],
+  )
+end
+
+desc "Build universal APK from AAB file"
+lane :buildUniversalApk do |options|
+  bundletool(
+    ks_path: options[:keystore_path],
+    ks_password: ENV['keystore_password'],
+    ks_key_alias: ENV['keystore_alias'],
+    ks_key_alias_password: ENV['keystore_alias_password'],
+    bundletool_version: '1.10.0', # For searching a specific version of bundletool visit https://github.com/google/bundletool/releases
+    aab_path: options[:aab_path],
+    apk_output_path: options[:apk_output_path],
+    verbose: true
+  )
+end

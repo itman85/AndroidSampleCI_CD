@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AndroidSampleCICD"
-include ':app'
+include(":app")
