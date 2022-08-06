@@ -62,7 +62,7 @@ android {
         create("prod") {
             dimension = "app"
             applicationId = "com.picoder.androidsamplecicd.prod"
-            versionName = "1.0"
+            versionName = "2.0.1"
         }
     }
 
