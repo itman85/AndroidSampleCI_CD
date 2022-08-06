@@ -29,7 +29,7 @@ platform :android do
 end
 
 desc "Creates a new debug build as bundle and extracts the universal apk to upload to firebase."
-lane :buildDebug do |options|
+lane :buildDebugBundle do |options|
   gradle(
     task: ":app:bundle",
     build_type:"Debug",
