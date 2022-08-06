@@ -56,7 +56,7 @@ jobs:
       # If feature branches: check if input release notes empty then use branch name instead
       - name: Generate release notes
         run: |
-            branch_name=${GITHUB_REF##*/}
+            branch_name=${GITHUB_REF#refs/heads/}
             if [[ "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
               if [ -z "${{ github.event.inputs.notes }}"]; then
                 git log -10 --pretty=tformat:"- %s" > FirebaseAppDistributionConfig/release_notes.txt
@@ -66,7 +66,7 @@ jobs:
               fi
             else
               if [ -z "${{ github.event.inputs.notes }}"]; then
-                echo "Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
+                echo "Branch: $branch_name" > FirebaseAppDistributionConfig/release_notes.txt
               else
                 echo "- Note: ${{ github.event.inputs.notes }}" > FirebaseAppDistributionConfig/release_notes.txt
                 echo "- Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
