@@ -62,10 +62,10 @@ jobs:
               git log -10 --pretty=tformat:"- %s" >> FirebaseAppDistributionConfig/release_notes.txt
             else
               if [ -z "${{ github.event.inputs.notes }}"]; then
-                echo $branch_name > FirebaseAppDistributionConfig/release_notes.txt
+                echo "Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
               else
-                echo ${{ github.event.inputs.notes }} > FirebaseAppDistributionConfig/release_notes.txt
-                echo $branch_name >> FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Note: ${{ github.event.inputs.notes }}" > FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
               fi
             fi
 
