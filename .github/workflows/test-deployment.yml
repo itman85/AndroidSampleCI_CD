@@ -59,14 +59,18 @@ jobs:
             branch_name=${GITHUB_REF#refs/heads/}
             if [[ "$branch_name" == "master" || "$branch_name" == *"release/"* ]]; then
               if [ -z "${{ github.event.inputs.notes }}"]; then
-                git log -10 --pretty=tformat:"- %s" > FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Branch: $branch_name" > FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Commits history:" >> FirebaseAppDistributionConfig/release_notes.txt
+                git log -10 --pretty=tformat:"  + %s" >> FirebaseAppDistributionConfig/release_notes.txt
               else
                 echo "- Note: ${{ github.event.inputs.notes }}" > FirebaseAppDistributionConfig/release_notes.txt
-                git log -10 --pretty=tformat:"- %s" >> FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Commits history:" >> FirebaseAppDistributionConfig/release_notes.txt
+                git log -10 --pretty=tformat:"  + %s" >> FirebaseAppDistributionConfig/release_notes.txt
               fi
             else
               if [ -z "${{ github.event.inputs.notes }}"]; then
-                echo "Branch: $branch_name" > FirebaseAppDistributionConfig/release_notes.txt
+                echo "- Branch: $branch_name" > FirebaseAppDistributionConfig/release_notes.txt
               else
                 echo "- Note: ${{ github.event.inputs.notes }}" > FirebaseAppDistributionConfig/release_notes.txt
                 echo "- Branch: $branch_name" >> FirebaseAppDistributionConfig/release_notes.txt
