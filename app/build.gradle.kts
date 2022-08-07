@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -43,11 +45,21 @@ android {
     }
 
     signingConfigs {
-        getByName("debug") {
-            storeFile = file("../keystores/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+        // use local_secrets for testing in case running CI, this folder will not existed in github env
+        val secretsPropertiesFile = rootProject.file("local_secrets/secrets.properties")
+        val secretProperties = Properties()
+        if (secretsPropertiesFile.exists()) {
+            // local build
+            secretProperties.load(FileInputStream(secretsPropertiesFile))
+
+            getByName("debug") {
+                storeFile = file("${secretProperties["debugStorePath"]}")
+                storePassword = "${secretProperties["debugStorePw"]}"
+                keyAlias = "${secretProperties["debugAlias"]}"
+                keyPassword = "${secretProperties["debugKeyPw"]}"
+            }
+        }else{
+            // CI build
         }
     }
 
