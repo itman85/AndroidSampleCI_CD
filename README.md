@@ -23,3 +23,6 @@ it will create Appfile and Fastfile in fastlane folder
  - add into github secrets: FIREBASE_CREDENTIALS, FIREBASE_APP_ID
  - create workflow distribute.yml 
  - Push code to main branch to see how github actions distribute workflow run and distribute apk to firebase app distribution
+## Create keystore cmd
+keytool -genkey -v -keystore YOUR_FILE_NAME.keystore -alias YOUR_ALIAS_NAME -storepass YOUR_ALIAS_PWD -keypass YOUR_ALIAS_PWD -keyalg RSA -validity 36500
+

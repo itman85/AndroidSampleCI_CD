@@ -38,6 +38,16 @@ lane :buildDebugBundle do |options|
   )
 end
 
+desc "Creates a new alpha build as bundle and extracts the universal apk to upload to firebase."
+lane :buildAlphaBundle do |options|
+  gradle(
+    task: ":app:bundle",
+    build_type:"Alpha",
+    flavor:options[:flavor],
+    flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
+  )
+end
+
 desc "Submit a new debug build to Firebase App Distribution"
 lane :deployToFirebase do |options|
   # this is app id of debug built type for each flavor

@@ -33,8 +33,8 @@ jobs:
           ruby-version: 3.0
           bundler-cache: true
 
-      - name: Build App Bundle
-        run: bundle exec fastlane buildDebugBundle flavor:${{ github.event.inputs.flavor }}
+      - name: Build Alpha App Bundle
+        run: bundle exec fastlane buildAlphaBundle flavor:${{ github.event.inputs.flavor }}
 
       - name: Get Aab Path
         id: get-app-path

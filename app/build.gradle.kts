@@ -25,6 +25,21 @@ android {
         }
     }
 
+    flavorDimensions += "app"
+    productFlavors{
+        create("demo") {
+            dimension = "app"
+            applicationId = "com.picoder.androidsamplecicd.demo"
+            versionName = "3.3"
+        }
+
+        create("prod") {
+            dimension = "app"
+            applicationId = "com.picoder.androidsamplecicd.prod"
+            versionName = "3.0"
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -34,10 +49,19 @@ android {
         create("alpha") {
             initWith(getByName("release"))
             applicationIdSuffix = ".alpha"
+            versionNameSuffix = "-alpha"
+
+            productFlavors.getByName("demo") {
+                signingConfig = signingConfigs.create("demo-alpha")
+            }
+            productFlavors.getByName("prod") {
+                signingConfig = signingConfigs.create("prod-alpha")
+            }
         }
 
         getByName("debug") {
             applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
             isDebuggable = true
             isMinifyEnabled = false
             signingConfig = signingConfigs.getAt("debug")
@@ -58,29 +82,31 @@ android {
                 keyAlias = "${secretProperties["debugAlias"]}"
                 keyPassword = "${secretProperties["debugKeyPw"]}"
             }
+
+            getByName("demo-alpha") {
+                storeFile = file("${secretProperties["demoAlphaStorePath"]}")
+                storePassword = "${secretProperties["demoAlphaStorePw"]}"
+                keyAlias = "${secretProperties["demoAlphaAlias"]}"
+                keyPassword = "${secretProperties["demoAlphaKeyPw"]}"
+            }
+
+            getByName("prod-alpha") {
+                storeFile = file("${secretProperties["prodAlphaStorePath"]}")
+                storePassword = "${secretProperties["prodAlphaStorePw"]}"
+                keyAlias = "${secretProperties["prodAlphaAlias"]}"
+                keyPassword = "${secretProperties["prodAlphaKeyPw"]}"
+            }
+
         }else{
             // CI build
         }
     }
 
-    flavorDimensions += "app"
-    productFlavors{
-        create("demo") {
-            dimension = "app"
-            applicationId = "com.picoder.androidsamplecicd.demo"
-            versionName = "1.0.1"
-        }
 
-        create("prod") {
-            dimension = "app"
-            applicationId = "com.picoder.androidsamplecicd.prod"
-            versionName = "3.0"
-        }
-    }
 
     applicationVariants.all {
-        val outputApkFileName = "${this.flavorName}-${this.buildType.name}-v${this.versionName}+${this.versionCode}.apk"
-        val outputAabFileName = "${this.flavorName}-${this.buildType.name}-v${this.versionName}+${this.versionCode}.aab"
+        val outputApkFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.apk"
+        val outputAabFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.aab"
 
         outputs.all {
             val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
