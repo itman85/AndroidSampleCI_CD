@@ -75,7 +75,7 @@ android {
         if (secretsPropertiesFile.exists()) {
             // local build
             secretProperties.load(FileInputStream(secretsPropertiesFile))
-
+            // not necessary for debug
             getByName("debug") {
                 storeFile = file("${secretProperties["debugStorePath"]}")
                 storePassword = "${secretProperties["debugStorePw"]}"
