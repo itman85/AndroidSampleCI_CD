@@ -26,3 +26,5 @@ it will create Appfile and Fastfile in fastlane folder
 ## Create keystore cmd
 keytool -genkey -v -keystore YOUR_FILE_NAME.keystore -alias YOUR_ALIAS_NAME -storepass YOUR_ALIAS_PWD -keypass YOUR_ALIAS_PWD -keyalg RSA -validity 36500
 
+## Create base64
+base64 -i firebase_credentials.json > firebase_credentials.json.b64

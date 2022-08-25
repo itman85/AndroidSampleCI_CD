@@ -32,7 +32,8 @@ jobs:
         with:
           ruby-version: 3.0
           bundler-cache: true
-
+      # for experiment purpose, in practice for testing distribution it should build to apk directly instead of building aab then have to build to apk
+      # only need to build aab file when deploy to store
       - name: Build Alpha App Bundle
         run: bundle exec fastlane buildAlphaBundle flavor:${{ github.event.inputs.flavor }}
 

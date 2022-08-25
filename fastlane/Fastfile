@@ -75,3 +75,23 @@ lane :buildUniversalApk do |options|
     verbose: true
   )
 end
+
+desc "Creates an Debug build for Apk file."
+lane :buildDebugApk do |options|
+  gradle(
+    task: "assemble",
+    build_type: "Debug",
+    flavor: options[:flavor],
+    flags: "--stacktrace"
+  )
+end
+
+desc "Creates an Debug build for android test."
+lane :buildDebugAndroidTest do |options|
+  gradle(
+    task: "assemble",
+    build_type: "DebugAndroidTest",
+    flavor: options[:flavor],
+    flags: "--stacktrace"
+  )
+end
