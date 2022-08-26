@@ -41,7 +41,7 @@ end
 desc "Creates a new alpha build as bundle and extracts the universal apk to upload to firebase."
 lane :buildAlphaBundle do |options|
   gradle(
-    task: ":app:bundle",
+    task: ":app:bundle", # no need to specific app module here in case multi-module project
     build_type:"Alpha",
     flavor:options[:flavor],
     flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
@@ -79,7 +79,7 @@ end
 desc "Creates an Debug build for Apk file."
 lane :buildDebugApk do |options|
   gradle(
-    task: "assemble",
+    task: "clean assemble",
     build_type: "Debug",
     flavor: options[:flavor],
     flags: "--stacktrace"
@@ -89,7 +89,7 @@ end
 desc "Creates an Debug build for android test."
 lane :buildDebugAndroidTest do |options|
   gradle(
-    task: "assemble",
+    task: "clean assemble",
     build_type: "DebugAndroidTest",
     flavor: options[:flavor],
     flags: "--stacktrace"
