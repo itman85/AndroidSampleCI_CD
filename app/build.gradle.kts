@@ -105,7 +105,7 @@ android {
 
 
     applicationVariants.all {
-        val outputApkFileName = "cicd-sample.apk"//"${this.flavorName}-v${this.versionName}+${this.versionCode}.apk"
+        val outputApkFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.apk"
         val outputAabFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.aab"
 
         outputs.all {
