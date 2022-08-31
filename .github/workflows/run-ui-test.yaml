@@ -23,9 +23,6 @@ jobs:
               ruby-version: 3.0
               bundler-cache: true
 
-        - name: print label
-          run: echo ${{github.event.pull_request.labels}}
-
         - name: Assemble app debug APK Prod
           if: "contains(github.event.pull_request.labels.*.name, 'prod')"
           run: bundle exec fastlane buildDebugApk flavor:prod
