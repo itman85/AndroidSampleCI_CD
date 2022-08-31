@@ -25,7 +25,7 @@ jobs:
 
         - name: Assemble app debug APK
           run: |
-            if [[ contains(github.event.pull_request.labels.*.name, 'prod') ]]; then
+            if contains(github.event.pull_request.labels.*.name, 'prod'); then
               bundle exec fastlane buildDebugApk flavor:prod
             else
             bundle exec fastlane buildDebugApk flavor:demo
@@ -45,7 +45,7 @@ jobs:
 
         - name: Assemble Android Instrumentation Tests
           run: |
-            if [[ contains(github.event.pull_request.labels.*.name, 'prod') ]]; then
+            if contains(github.event.pull_request.labels.*.name, 'prod'); then
               bundle exec fastlane buildDebugAndroidTest flavor:prod
             else
               bundle exec fastlane buildDebugAndroidTest flavor:demo
