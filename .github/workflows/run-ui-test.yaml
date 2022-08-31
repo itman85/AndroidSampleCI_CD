@@ -31,7 +31,7 @@ jobs:
           run: echo "::set-output name=apk-path::$(find . -name '*.apk' -print -quit)"
 
         - name: Upload app APK
-          uses: actions/upload-artifact@v1
+          uses: actions/upload-artifact@v3
           with:
             name: app-debug
             path: ${{ steps.get-apk-path.outputs.apk-path }}
@@ -44,7 +44,7 @@ jobs:
           run: echo "::set-output name=apk-path::$(find . -name '*androidTest.apk' -print -quit)"
 
         - name: Upload Android Test APK
-          uses: actions/upload-artifact@v1
+          uses: actions/upload-artifact@v3
           with:
             name: app-debug-androidTest
             path: ${{ steps.get-android-test-apk-path.outputs.apk-path }}
@@ -58,20 +58,22 @@ jobs:
         - uses: actions/checkout@v3
 
         - name: Download app APK
-          uses: actions/download-artifact@v1
+          uses: actions/download-artifact@v3
           with:
             name: app-debug
+            path: app-debug
 
         - name: Download Android test APK
-          uses: actions/download-artifact@v1
+          uses: actions/download-artifact@v3
           with:
             name: app-debug-androidTest
+            path: app-debug-androidTest
 
         - name: Login to Google Cloud
           id: auth
           uses: google-github-actions/auth@v0.8.0
           with:
-            credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
+            credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }} # use workload identity instead
 
         - name: Setup Google Cloud SDK
           uses: google-github-actions/setup-gcloud@v0.6.0
@@ -82,5 +84,5 @@ jobs:
           run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
 
         - name: Run Instrumentation Tests in Firebase Test Lab
-          run: gcloud firebase test android run --type instrumentation --app app-debug/*.apk --test app-debug-androidTest/*.apk --device model=Pixel2,version=28,locale=pl,orientation=portrait
+          run: gcloud firebase test android run --type instrumentation --app app-debug/*.apk --test app-debug-androidTest/*.apk --device model=Pixel3,version=30,locale=pl,orientation=portrait
 
