@@ -24,11 +24,11 @@ jobs:
               bundler-cache: true
 
         - name: Assemble app debug APK Prod
-          if: contains(github.event.pull_request.labels.*.name, 'prod')
+          if: "contains(github.event.pull_request.labels.*.name, 'prod')"
           run: bundle exec fastlane buildDebugApk flavor:prod
 
         - name: Assemble app debug APK Demo
-          if: !contains(github.event.pull_request.labels.*.name, 'prod')
+          if: "!contains(github.event.pull_request.labels.*.name, 'prod')"
           run: bundle exec fastlane buildDebugApk flavor:demo
 
         #- name: Assemble app debug APK
@@ -45,11 +45,11 @@ jobs:
             path: ${{ steps.get-apk-path.outputs.apk-path }}
 
         - name: Assemble Android Instrumentation Tests Prod
-          if: contains(github.event.pull_request.labels.*.name, 'prod')
+          if: "contains(github.event.pull_request.labels.*.name, 'prod')"
           run: bundle exec fastlane buildDebugAndroidTest flavor:prod
 
         - name: Assemble Android Instrumentation Tests Demo
-          if: !contains(github.event.pull_request.labels.*.name, 'prod')
+          if: "!contains(github.event.pull_request.labels.*.name, 'prod')"
           run: bundle exec fastlane buildDebugAndroidTest flavor:demo
 
         - name: Get Android Test Apk Path
