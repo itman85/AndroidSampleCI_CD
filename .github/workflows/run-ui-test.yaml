@@ -6,7 +6,7 @@ on: pull_request
 jobs:
     generate-apk:
       name: Generate APK
-      runs-on: pi-mac-m1
+      runs-on: self-hosted
 
       steps:
         - name: Cancel Previous Runs
@@ -65,7 +65,7 @@ jobs:
     run-ui-test-on-firebase:
       name: Run UI test on firebase test-lab
       needs: generate-apk
-      runs-on: pi-mac-m1
+      runs-on: self-hosted
 
       steps:
         - uses: actions/checkout@v3
