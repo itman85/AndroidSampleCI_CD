@@ -8,7 +8,7 @@ it will create Appfile and Fastfile in fastlane folder
  - Add the firebase plugin *fastlane add_plugin firebase_app_distribution*
  - Type command in root folder of project to see all actions of plugin firebase_app_distribution *bundle exec fastlane action firebase_app_distribution*
  - Getting the Firebase App ID: go to firebase console -> add project -> add app -> copy App ID in project settings
- - Go to Google cloud platform -> select project created from firebase -> create a new service -> add role 'Firebase Product' 'Firebase App Distribution Admin', then create key json file download and add into project name firebase_credentials.json
+ - Go to Google cloud platform -> select project created from firebase -> create a new service account -> add role 'Firebase Admin' 'Firebase App Distribution Admin', then create key json file download and add into project name firebase_credentials.json or copy json into github secrets
  - To run fastlane local it need to run this **export FIREBASE_APP_ID=YOUR_APP_ID**
  - Configure Firebase App Distribution: Create a new directory FirebaseAppDistributionConfig under the root directory of your project. Create a new file groups.txt in the created directory. Create a new file release_notes.txt in the same directory.
  - create distribute lane (in Fastfile)
