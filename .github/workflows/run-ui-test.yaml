@@ -17,12 +17,12 @@ jobs:
         - uses: actions/checkout@v3
 
         # this help to use bundle fastlane cmd
-        - name: Set up Ruby env
-          uses: ruby/setup-ruby@v1.127.0
-          with:
-              ruby-version: 3.0
-              arch: arm64
-              bundler-cache: true
+        #- name: Set up Ruby env
+        #  uses: ruby/setup-ruby@v1.127.0
+        #  with:
+        #      ruby-version: 3.0
+        #      arch: arm64
+        #      bundler-cache: true
 
         - name: Assemble app debug APK Prod
           if: "contains(github.event.pull_request.labels.*.name, 'prod')"
