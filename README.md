@@ -36,3 +36,6 @@ base64 -i firebase_credentials.json > firebase_credentials.json.b64
    firebase logout -- token $token (call this to clear token)
  - check token
    firebase projects:list --token "$FIREBASE_TOKEN"
+## Encode your KeyStore file (.jks) to base64
+ - $ openssl base64 -A -in demo_alpha.keystore -out demo_alpha.txt
+ - copy text in demo_alpha.txt to github actions secrets

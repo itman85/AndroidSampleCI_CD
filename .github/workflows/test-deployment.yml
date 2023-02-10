@@ -17,7 +17,7 @@ on:
         default: ''
         required: false
 env:
-  ALPHA_KEYSTORE_FILE_PATH: ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+  ALPHA_KEYSTORE_FILE_PATH: ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }} # this secret store file name only (alpha.keystore)
   DEMO_ALPHA_KEYSTORE_PW: ${{ secrets.DEMO_ALPHA_KEYSTORE_PW }}
   DEMO_ALPHA_KEYSTORE_ALIAS: ${{ secrets.DEMO_ALPHA_KEYSTORE_ALIAS }}
   DEMO_ALPHA_KEY_PW: ${{ secrets.DEMO_ALPHA_KEY_PW }}
@@ -44,7 +44,7 @@ jobs:
 
       - name: Generate Demo Alpha signature file
         if: ${{ github.event.inputs.flavor == 'demo' }}
-        run: echo ${{ secrets.DEMO_ALPHA_KEYSTORE_FILE }} | base64 -d > ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+        run: echo ${{ secrets.DEMO_ALPHA_KEYSTORE_FILE }} | base64 -d > ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }} # write content to this file (alpha.keystore)
 
       - name: Generate Prod Alpha signature file
         if: ${{ github.event.inputs.flavor == 'prod' }}
