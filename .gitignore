@@ -84,6 +84,7 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-# secrets folder must be added into gitignore in practice, just for storage purpose so it excluded from gitignore
-#secrets
+# secrets, keystores folder must be added into gitignore in practice, just for storage purpose so it excluded from gitignore
+# secrets
+# keystores
 local_secrets

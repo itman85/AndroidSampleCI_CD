@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.picoder.androidsamplecicd"
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.picoder.androidsamplecicd"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = Utilities.buildNumber(projectDir)
         versionName = "1.0"
 
@@ -96,9 +96,24 @@ android {
                 keyAlias = "${secretProperties["prodAlphaAlias"]}"
                 keyPassword = "${secretProperties["prodAlphaKeyPw"]}"
             }
+            // not defined signing config for release build of demo and prod flavor
 
         }else{
-            // CI build
+            // CI alpha build
+            getByName("demo-alpha") {
+                storeFile = file(System.getenv("ALPHA_KEYSTORE_FILE_PATH"))
+                storePassword = System.getenv("DEMO_ALPHA_KEYSTORE_PW")
+                keyAlias = System.getenv("DEMO_ALPHA_KEYSTORE_ALIAS")
+                keyPassword = System.getenv("DEMO_ALPHA_KEY_PW")
+            }
+
+            getByName("prod-alpha") {
+                storeFile = file("${System.getenv("ALPHA_KEYSTORE_FILE_PATH")}")
+                storePassword = System.getenv("PROD_ALPHA_KEYSTORE_PW")
+                keyAlias = System.getenv("PROD_ALPHA_KEYSTORE_ALIAS")
+                keyPassword = System.getenv("PROD_ALPHA_KEY_PW")
+            }
+            // CI prod build (do same to alpha but with different keystore info)
         }
     }
 
