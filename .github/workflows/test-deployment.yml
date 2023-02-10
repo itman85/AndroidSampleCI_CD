@@ -16,6 +16,9 @@ on:
         description: 'Notes for this build (optional)'
         default: ''
         required: false
+env:
+  ALPHA_KEYSTORE_FILE_PATH: ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+
 jobs:
   build-and-deploy:
     # The type of runner that the job will run on
