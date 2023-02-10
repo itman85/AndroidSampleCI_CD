@@ -108,7 +108,7 @@ android {
             }
 
             getByName("prod-alpha") {
-                storeFile = file("${System.getenv("ALPHA_KEYSTORE_FILE_PATH")}")
+                storeFile = file(System.getenv("ALPHA_KEYSTORE_FILE_PATH"))
                 storePassword = System.getenv("PROD_ALPHA_KEYSTORE_PW")
                 keyAlias = System.getenv("PROD_ALPHA_KEYSTORE_ALIAS")
                 keyPassword = System.getenv("PROD_ALPHA_KEY_PW")
