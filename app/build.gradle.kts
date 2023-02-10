@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -8,18 +10,33 @@ plugins {
 
 android {
     namespace = "com.picoder.androidsamplecicd"
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.picoder.androidsamplecicd"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = Utilities.buildNumber(projectDir)
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    flavorDimensions += "app"
+    productFlavors{
+        create("demo") {
+            dimension = "app"
+            applicationId = "com.picoder.androidsamplecicd.demo"
+            versionName = "3.3"
+        }
+
+        create("prod") {
+            dimension = "app"
+            applicationId = "com.picoder.androidsamplecicd.prod"
+            versionName = "3.0"
         }
     }
 
@@ -32,10 +49,19 @@ android {
         create("alpha") {
             initWith(getByName("release"))
             applicationIdSuffix = ".alpha"
+            versionNameSuffix = "-alpha"
+
+            productFlavors.getByName("demo") {
+                signingConfig = signingConfigs.create("demo-alpha")
+            }
+            productFlavors.getByName("prod") {
+                signingConfig = signingConfigs.create("prod-alpha")
+            }
         }
 
         getByName("debug") {
             applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
             isDebuggable = true
             isMinifyEnabled = false
             signingConfig = signingConfigs.getAt("debug")
@@ -43,32 +69,59 @@ android {
     }
 
     signingConfigs {
-        getByName("debug") {
-            storeFile = file("../keystores/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+        // use local_secrets for testing in case running CI, this folder will not existed in github env
+        val secretsPropertiesFile = rootProject.file("local_secrets/secrets.properties")
+        val secretProperties = Properties()
+        if (secretsPropertiesFile.exists()) {
+            // local build
+            secretProperties.load(FileInputStream(secretsPropertiesFile))
+            // not necessary for debug
+            getByName("debug") {
+                storeFile = file("${secretProperties["debugStorePath"]}")
+                storePassword = "${secretProperties["debugStorePw"]}"
+                keyAlias = "${secretProperties["debugAlias"]}"
+                keyPassword = "${secretProperties["debugKeyPw"]}"
+            }
+
+            getByName("demo-alpha") {
+                storeFile = file("${secretProperties["demoAlphaStorePath"]}")
+                storePassword = "${secretProperties["demoAlphaStorePw"]}"
+                keyAlias = "${secretProperties["demoAlphaAlias"]}"
+                keyPassword = "${secretProperties["demoAlphaKeyPw"]}"
+            }
+
+            getByName("prod-alpha") {
+                storeFile = file("${secretProperties["prodAlphaStorePath"]}")
+                storePassword = "${secretProperties["prodAlphaStorePw"]}"
+                keyAlias = "${secretProperties["prodAlphaAlias"]}"
+                keyPassword = "${secretProperties["prodAlphaKeyPw"]}"
+            }
+            // not defined signing config for release build of demo and prod flavor
+
+        }else{
+            // CI alpha build
+            getByName("demo-alpha") {
+                storeFile = file("../${System.getenv("ALPHA_KEYSTORE_FILE_PATH")}")
+                storePassword = System.getenv("DEMO_ALPHA_KEYSTORE_PW")
+                keyAlias = System.getenv("DEMO_ALPHA_KEYSTORE_ALIAS")
+                keyPassword = System.getenv("DEMO_ALPHA_KEY_PW")
+            }
+
+            getByName("prod-alpha") {
+                storeFile = file("../${System.getenv("ALPHA_KEYSTORE_FILE_PATH")}")
+                storePassword = System.getenv("PROD_ALPHA_KEYSTORE_PW")
+                keyAlias = System.getenv("PROD_ALPHA_KEYSTORE_ALIAS")
+                keyPassword = System.getenv("PROD_ALPHA_KEY_PW")
+            }
+            // CI prod build (do same to alpha but with different keystore info)
         }
     }
 
-    flavorDimensions += "app"
-    productFlavors{
-        create("demo") {
-            dimension = "app"
-            applicationId = "com.picoder.androidsamplecicd.demo"
-            versionName = "1.0.1"
-        }
 
-        create("prod") {
-            dimension = "app"
-            applicationId = "com.picoder.androidsamplecicd.prod"
-            versionName = "3.0"
-        }
-    }
 
     applicationVariants.all {
-        val outputApkFileName = "${this.flavorName}-${this.buildType.name}-v${this.versionName}+${this.versionCode}.apk"
-        val outputAabFileName = "${this.flavorName}-${this.buildType.name}-v${this.versionName}+${this.versionCode}.aab"
+        val outputApkFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.apk"
+        val outputAabFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.aab"
 
         outputs.all {
             val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl

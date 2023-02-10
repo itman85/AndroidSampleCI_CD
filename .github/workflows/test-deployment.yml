@@ -1,5 +1,5 @@
 # This is a basic workflow that is manually triggered to deploy alpha build to firebase for testing
-name: Test Deployment
+name: Test Alpha Deployment
 
 on:
   workflow_dispatch:
@@ -16,6 +16,15 @@ on:
         description: 'Notes for this build (optional)'
         default: ''
         required: false
+env:
+  ALPHA_KEYSTORE_FILE_PATH: ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+  DEMO_ALPHA_KEYSTORE_PW: ${{ secrets.DEMO_ALPHA_KEYSTORE_PW }}
+  DEMO_ALPHA_KEYSTORE_ALIAS: ${{ secrets.DEMO_ALPHA_KEYSTORE_ALIAS }}
+  DEMO_ALPHA_KEY_PW: ${{ secrets.DEMO_ALPHA_KEY_PW }}
+  PROD_ALPHA_KEYSTORE_PW: ${{ secrets.PROD_ALPHA_KEYSTORE_PW }}
+  PROD_ALPHA_KEYSTORE_ALIAS: ${{ secrets.PROD_ALPHA_KEYSTORE_ALIAS }}
+  PROD_ALPHA_KEY_PW: ${{ secrets.PROD_ALPHA_KEY_PW }}
+
 jobs:
   build-and-deploy:
     # The type of runner that the job will run on
@@ -33,23 +42,47 @@ jobs:
           ruby-version: 3.0
           bundler-cache: true
 
-      - name: Build App Bundle
-        run: bundle exec fastlane buildDebugBundle flavor:${{ github.event.inputs.flavor }}
+      - name: Generate Demo Alpha signature file
+        if: ${{ github.event.inputs.flavor == 'demo' }}
+        run: echo ${{ secrets.DEMO_ALPHA_KEYSTORE_FILE }} | base64 -d > ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+
+      - name: Generate Prod Alpha signature file
+        if: ${{ github.event.inputs.flavor == 'prod' }}
+        run: echo ${{ secrets.PROD_ALPHA_KEYSTORE_FILE }} | base64 -d > ${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+
+      # for experiment purpose, in practice for testing distribution it should build to apk directly instead of building aab then have to build to apk
+      # only need to build aab file when deploy to store
+      - name: Build Alpha App Bundle
+        run: bundle exec fastlane buildAlphaBundle flavor:${{ github.event.inputs.flavor }}
 
       - name: Get Aab Path
         id: get-app-path
         run: echo "::set-output name=app-path::$(find . -name '*.aab' -print -quit)"
 
-      - name: Build Apk from Abb file
+      - name: Demo Build Apk from Abb file
+        if: ${{ github.event.inputs.flavor == 'demo' }}
         run: >
           bundle exec fastlane buildUniversalApk
-          keystore_path:'keystores/debug.keystore'
+          keystore_path:${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
           aab_path:"$aab_path"
           apk_output_path:"${aab_path%/*}"
         env:
-          keystore_password: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
-          keystore_alias: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
-          keystore_alias_password: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSWORD }}
+          keystore_password: ${{ secrets.DEMO_ALPHA_KEYSTORE_PW }}
+          keystore_alias: ${{ secrets.DEMO_ALPHA_KEYSTORE_ALIAS }}
+          keystore_alias_password: ${{ secrets.DEMO_ALPHA_KEY_PW }}
+          aab_path: ${{ steps.get-app-path.outputs.app-path }}
+
+      - name: Prod Build Apk from Abb file
+        if: ${{ github.event.inputs.flavor == 'prod' }}
+        run: >
+          bundle exec fastlane buildUniversalApk
+          keystore_path:${{ secrets.ALPHA_KEYSTORE_FILE_PATH }}
+          aab_path:"$aab_path"
+          apk_output_path:"${aab_path%/*}"
+        env:
+          keystore_password: ${{ secrets.PROD_ALPHA_KEYSTORE_PW }}
+          keystore_alias: ${{ secrets.PROD_ALPHA_KEYSTORE_ALIAS }}
+          keystore_alias_password: ${{ secrets.PROD_ALPHA_KEY_PW }}
           aab_path: ${{ steps.get-app-path.outputs.app-path }}
 
       # If branch is develop, master, release/* branch will get log of commits write into release notes

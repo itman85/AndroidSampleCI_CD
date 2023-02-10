@@ -8,7 +8,7 @@ it will create Appfile and Fastfile in fastlane folder
  - Add the firebase plugin *fastlane add_plugin firebase_app_distribution*
  - Type command in root folder of project to see all actions of plugin firebase_app_distribution *bundle exec fastlane action firebase_app_distribution*
  - Getting the Firebase App ID: go to firebase console -> add project -> add app -> copy App ID in project settings
- - Go to Google cloud platform -> select project created from firebase -> create a new service -> add role 'Firebase Product' 'Firebase App Distribution Admin', then create key json file download and add into project name firebase_credentials.json
+ - Go to Google cloud platform -> select project created from firebase -> create a new service account -> add role 'Firebase Admin' 'Firebase App Distribution Admin' 'Cloud Storage - Storage Object Creator' 'Cloud Storage for Firebase Admin' , then create key json file download and add into project name firebase_credentials.json or copy json into github secrets
  - To run fastlane local it need to run this **export FIREBASE_APP_ID=YOUR_APP_ID**
  - Configure Firebase App Distribution: Create a new directory FirebaseAppDistributionConfig under the root directory of your project. Create a new file groups.txt in the created directory. Create a new file release_notes.txt in the same directory.
  - create distribute lane (in Fastfile)
@@ -23,3 +23,16 @@ it will create Appfile and Fastfile in fastlane folder
  - add into github secrets: FIREBASE_CREDENTIALS, FIREBASE_APP_ID
  - create workflow distribute.yml 
  - Push code to main branch to see how github actions distribute workflow run and distribute apk to firebase app distribution
+## Create keystore cmd
+keytool -genkey -v -keystore YOUR_FILE_NAME.keystore -alias YOUR_ALIAS_NAME -storepass YOUR_ALIAS_PWD -keypass YOUR_ALIAS_PWD -keyalg RSA -validity 36500
+
+## Create base64
+base64 -i firebase_credentials.json > firebase_credentials.json.b64
+
+## Get Firebase CLI Token
+ - install firebase cli
+   npm install -g firebase-tools
+   firebase login:ci
+   firebase logout -- token $token (call this to clear token)
+ - check token
+   firebase projects:list --token "$FIREBASE_TOKEN"

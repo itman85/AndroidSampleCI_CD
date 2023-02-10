@@ -1,0 +1,105 @@
+# This is a workflow that run ui tests on firebase test-lab
+name: Run Tests
+
+on: pull_request
+
+jobs:
+    generate-apk:
+      name: Generate APK
+      runs-on: ubuntu-latest
+      #runs-on:
+      #  - self-hosted
+      #  - label-pi-m1
+
+      steps:
+        - name: Cancel Previous Runs
+          uses: styfle/cancel-workflow-action@0.10.0
+          with:
+              access_token: ${{ github.token }}
+
+        - uses: actions/checkout@v3
+
+        # use self hosted runner no need step for setup Ruby env
+        # this help to use bundle fastlane cmd
+        - name: Set up Ruby env
+          uses: ruby/setup-ruby@v1.127.0
+          with:
+              ruby-version: 3.0
+              bundler-cache: true
+
+        - name: Assemble app debug APK Prod
+          if: "contains(github.event.pull_request.labels.*.name, 'prod')"
+          run: bundle exec fastlane buildDebugApk flavor:prod
+
+        - name: Assemble app debug APK Demo
+          if: "!contains(github.event.pull_request.labels.*.name, 'prod')"
+          run: bundle exec fastlane buildDebugApk flavor:demo
+
+        #- name: Assemble app debug APK
+        #  run: bundle exec fastlane buildDebugApk flavor:demo
+
+        - name: Get Apk Path
+          id: get-apk-path
+          run: echo "::set-output name=apk-path::$(find . -name '*.apk' -print -quit)"
+
+        - name: Upload app APK
+          uses: actions/upload-artifact@v3
+          with:
+            name: app-debug
+            path: ${{ steps.get-apk-path.outputs.apk-path }}
+
+        - name: Assemble Android Instrumentation Tests Prod
+          if: "contains(github.event.pull_request.labels.*.name, 'prod')"
+          run: bundle exec fastlane buildDebugAndroidTest flavor:prod
+
+        - name: Assemble Android Instrumentation Tests Demo
+          if: "!contains(github.event.pull_request.labels.*.name, 'prod')"
+          run: bundle exec fastlane buildDebugAndroidTest flavor:demo
+
+        - name: Get Android Test Apk Path
+          id: get-android-test-apk-path
+          run: echo "::set-output name=apk-path::$(find . -name '*androidTest.apk' -print -quit)"
+
+        - name: Upload Android Test APK
+          uses: actions/upload-artifact@v3
+          with:
+            name: app-debug-androidTest
+            path: ${{ steps.get-android-test-apk-path.outputs.apk-path }}
+
+    run-ui-test-on-firebase:
+      name: Run UI test on firebase test-lab
+      needs: generate-apk
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Download app APK
+          uses: actions/download-artifact@v3
+          with:
+            name: app-debug
+            path: app-debug
+
+        - name: Download Android test APK
+          uses: actions/download-artifact@v3
+          with:
+            name: app-debug-androidTest
+            path: app-debug-androidTest
+
+        - name: Login to Google Cloud
+          id: auth
+          uses: google-github-actions/auth@v0.8.0
+          with:
+            credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }} # use workload identity instead
+
+        - name: Setup Google Cloud SDK
+          uses: google-github-actions/setup-gcloud@v0.6.0
+          with:
+            version: '399.0.0'
+
+        - name: Set current project
+          run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+
+        - name: Run Instrumentation Tests in Firebase Test Lab
+          run: gcloud firebase test android run --type instrumentation --app app-debug/*.apk --test app-debug-androidTest/*.apk --device model=Pixel3,version=30,locale=pl,orientation=portrait
+

@@ -38,10 +38,20 @@ lane :buildDebugBundle do |options|
   )
 end
 
-desc "Submit a new debug build to Firebase App Distribution"
+desc "Creates a new alpha build as bundle and extracts the universal apk to upload to firebase."
+lane :buildAlphaBundle do |options|
+  gradle(
+    task: ":app:bundle", # no need to specific app module here in case multi-module project
+    build_type:"Alpha",
+    flavor:options[:flavor],
+    flags: "--no-daemon -Dkotlin.compiler.execution.strategy=in-proces --no-build-cache"
+  )
+end
+
+desc "Submit a new alpha build to Firebase App Distribution"
 lane :deployToFirebase do |options|
-  # this is app id of debug built type for each flavor
-  appIdMap = { "demo" => "1:353599743826:android:c818eaef9bf8a1b00f3c8b", "prod" => "1:353599743826:android:ddd7007c81fcf0d80f3c8b"}
+  # this is alpha app id of alpha built type for each flavor (get alpha app id from firebase project settings)
+  appIdMap = { "demo" => "1:353599743826:android:2d635bea97c88b820f3c8b", "prod" => "1:353599743826:android:c2b84b9ae9842e230f3c8b"}
   firebase_app_distribution(
       app: appIdMap[options[:flavor]],
       groups_file: "FirebaseAppDistributionConfig/groups.txt",
@@ -63,5 +73,25 @@ lane :buildUniversalApk do |options|
     aab_path: options[:aab_path],
     apk_output_path: options[:apk_output_path],
     verbose: true
+  )
+end
+
+desc "Creates an Debug build for Apk file."
+lane :buildDebugApk do |options|
+  gradle(
+    task: "clean assemble",
+    build_type: "Debug",
+    flavor: options[:flavor],
+    flags: "--stacktrace"
+  )
+end
+
+desc "Creates an Debug build for android test."
+lane :buildDebugAndroidTest do |options|
+  gradle(
+    task: "clean assemble",
+    build_type: "DebugAndroidTest",
+    flavor: options[:flavor],
+    flags: "--stacktrace"
   )
 end
