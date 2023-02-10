@@ -84,14 +84,14 @@ android {
             }
 
             getByName("demo-alpha") {
-                storeFile = file("../${secretProperties["demoAlphaStorePath"]}")
+                storeFile = file("${secretProperties["demoAlphaStorePath"]}")
                 storePassword = "${secretProperties["demoAlphaStorePw"]}"
                 keyAlias = "${secretProperties["demoAlphaAlias"]}"
                 keyPassword = "${secretProperties["demoAlphaKeyPw"]}"
             }
 
             getByName("prod-alpha") {
-                storeFile = file("../${secretProperties["prodAlphaStorePath"]}")
+                storeFile = file("${secretProperties["prodAlphaStorePath"]}")
                 storePassword = "${secretProperties["prodAlphaStorePw"]}"
                 keyAlias = "${secretProperties["prodAlphaAlias"]}"
                 keyPassword = "${secretProperties["prodAlphaKeyPw"]}"
@@ -101,14 +101,14 @@ android {
         }else{
             // CI alpha build
             getByName("demo-alpha") {
-                storeFile = file(System.getenv("ALPHA_KEYSTORE_FILE_PATH"))
+                storeFile = file("../${System.getenv("ALPHA_KEYSTORE_FILE_PATH")}")
                 storePassword = System.getenv("DEMO_ALPHA_KEYSTORE_PW")
                 keyAlias = System.getenv("DEMO_ALPHA_KEYSTORE_ALIAS")
                 keyPassword = System.getenv("DEMO_ALPHA_KEY_PW")
             }
 
             getByName("prod-alpha") {
-                storeFile = file(System.getenv("ALPHA_KEYSTORE_FILE_PATH"))
+                storeFile = file("../${System.getenv("ALPHA_KEYSTORE_FILE_PATH")}")
                 storePassword = System.getenv("PROD_ALPHA_KEYSTORE_PW")
                 keyAlias = System.getenv("PROD_ALPHA_KEYSTORE_ALIAS")
                 keyPassword = System.getenv("PROD_ALPHA_KEY_PW")
