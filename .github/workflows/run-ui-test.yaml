@@ -69,7 +69,7 @@ jobs:
     run-ui-test-on-firebase:
       name: Run UI test on firebase test-lab
       needs: generate-apk
-      runs-on: self-hosted
+      runs-on: ubuntu-latest
 
       steps:
         - uses: actions/checkout@v3
