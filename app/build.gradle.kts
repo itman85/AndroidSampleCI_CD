@@ -84,14 +84,14 @@ android {
             }
 
             getByName("demo-alpha") {
-                storeFile = file("${secretProperties["demoAlphaStorePath"]}")
+                storeFile = file("../${secretProperties["demoAlphaStorePath"]}")
                 storePassword = "${secretProperties["demoAlphaStorePw"]}"
                 keyAlias = "${secretProperties["demoAlphaAlias"]}"
                 keyPassword = "${secretProperties["demoAlphaKeyPw"]}"
             }
 
             getByName("prod-alpha") {
-                storeFile = file("${secretProperties["prodAlphaStorePath"]}")
+                storeFile = file("../${secretProperties["prodAlphaStorePath"]}")
                 storePassword = "${secretProperties["prodAlphaStorePw"]}"
                 keyAlias = "${secretProperties["prodAlphaAlias"]}"
                 keyPassword = "${secretProperties["prodAlphaKeyPw"]}"
