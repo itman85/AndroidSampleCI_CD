@@ -1,3 +1,4 @@
+import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
 import java.util.Properties
 import java.io.FileInputStream
@@ -118,7 +119,6 @@ android {
     }
 
 
-
     applicationVariants.all {
         val outputApkFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.apk"
         val outputAabFileName = "${this.flavorName}-v${this.versionName}+${this.versionCode}.aab"
@@ -130,11 +130,12 @@ android {
             // Get final bundle task name for this variant
             val bundleFinalizeTaskName = StringBuilder("sign").run {
                 // Add each flavor dimension for this variant here
-                productFlavors.forEach {
+                /*productFlavors.forEach {
                     append(it.name.capitalizeAsciiOnly())
-                }
+                }*/
+                append(flavorName.capitalized())
                 // Add build type of this variant
-                append(buildType.name.capitalizeAsciiOnly())
+                append(buildType.name.capitalized())
                 append("Bundle")
                 toString()
             }
