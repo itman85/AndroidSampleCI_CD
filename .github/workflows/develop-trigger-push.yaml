@@ -2,7 +2,7 @@ name: Develop trigger
 
 on:
   push:
-    branches: [master]
+    branches: [develop]
 
 jobs:
   check:
@@ -17,11 +17,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: print commit logs
+        shell: bash
         run: |
           LATEST_COMMITS=$(git log -10 --pretty=tformat:"  + %s")
-          echo "${{ github.event.commits[1].message }}"
-          # Loop through and echo each commit on a separate line
-          IFS=$'\n'
-          for COMMIT in ${LATEST_COMMITS}; do
-            echo "${COMMIT}"
-          done
+          echo "${LATEST_COMMITS}"
