@@ -19,4 +19,4 @@ jobs:
       - name: print commit logs
         run: |
           LATEST_COMMITS=$(git log --oneline -n 5 | awk '{$1=""; print $0}' | sed 's/^ *//')
-          echo $LATEST_COMMITS
+          echo "${LATEST_COMMITS}"
