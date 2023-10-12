@@ -16,16 +16,7 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1.127.0
-        with:
-          ruby-version: 3.0
-          bundler-cache: true
-
-      - name: Assemble app debug APK Prod
-        run: bundle exec fastlane buildDebugApk flavor:prod
-
       - name: print commit logs
         run: |
-          LATEST_COMMITS=$(git log --oneline -n 5 | awk '{$1=""; print $0}'
+          LATEST_COMMITS=$(git log --oneline -n 5 | awk '{$1=""; print $0}' | sed 's/^ *//')
           echo $LATEST_COMMITS
