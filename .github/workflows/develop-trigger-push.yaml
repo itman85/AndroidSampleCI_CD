@@ -1,0 +1,31 @@
+name: Develop trigger
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  check:
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.10.0
+        with:
+          access_token: ${{ github.token }}
+
+      - uses: actions/checkout@v3
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1.127.0
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+
+      - name: Assemble app debug APK Prod
+        run: bundle exec fastlane buildDebugApk flavor:prod
+
+      - name: print commit logs
+        run: |
+          LATEST_COMMITS=$(git log -3 --pretty=%B)
+          echo $LATEST_COMMITS
