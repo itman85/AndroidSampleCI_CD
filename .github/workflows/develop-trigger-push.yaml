@@ -27,5 +27,5 @@ jobs:
 
       - name: print commit logs
         run: |
-          LATEST_COMMITS=$(git log -3 --pretty=%B)
+          LATEST_COMMITS=$(git log --oneline -n 5 | awk '{$1=""; print $0}'
           echo $LATEST_COMMITS
