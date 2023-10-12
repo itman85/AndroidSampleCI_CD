@@ -2,7 +2,7 @@ name: Develop trigger
 
 on:
   push:
-    branches: [develop]
+    branches: [master]
 
 jobs:
   check:
