@@ -18,5 +18,9 @@ jobs:
 
       - name: print commit logs
         run: |
-          LATEST_COMMITS=$(git log --oneline -n 5 | awk '{$1=""; print $0}' | sed 's/^ *//')
-          echo "${LATEST_COMMITS}"
+          LATEST_COMMITS=$(git log --oneline -n 5 | cut -d" " -f2-)
+          # Loop through and echo each commit on a separate line
+          IFS=$'\n'
+          for COMMIT in ${LATEST_COMMITS}; do
+            echo "${COMMIT}"
+          done
