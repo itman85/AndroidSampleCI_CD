@@ -16,8 +16,12 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: print commit logs
-        shell: bash
+      - name: generate commit logs
         run: |
-          LATEST_COMMITS=$(git log -10 --pretty=tformat:"  + %s")
-          echo "${LATEST_COMMITS}"
+          echo "MULTI_LINES_TEXT_ENV_VAR<<EOF" >> $GITHUB_ENV
+          git log -10 --pretty=tformat:"  + %s" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Using the previously defined environment variable
+        run: |
+          echo ${{ env.MULTI_LINES_TEXT_ENV_VAR }}
