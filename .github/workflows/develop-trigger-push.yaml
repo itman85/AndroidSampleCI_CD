@@ -19,7 +19,7 @@ jobs:
       - name: generate commit logs
         run: |
           echo "MULTI_LINES_TEXT_ENV_VAR<<EOF" >> $GITHUB_ENV
-          echo ${git log -10 --pretty=tformat:"  + %s"} >> $GITHUB_ENV
+          echo "${git log -10 --pretty=tformat:"  + %s"}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Using the previously defined environment variable
