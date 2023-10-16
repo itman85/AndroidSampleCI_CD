@@ -20,7 +20,7 @@ jobs:
         run: |
           branch_name=${GITHUB_REF#refs/heads/}
           echo "$branch_name"
-          echo "DEVELOP_LATEST_COMMIT=$(git log $branch_name -1 --pretty=tformat:"  + %s")" >> $GITHUB_ENV
+          echo "DEVELOP_LATEST_COMMIT=$(git log $branch_name -1 --pretty=tformat:"  + %s" | sed 's/"/\\"/g')" >> $GITHUB_ENV
 
       - name: print develop latest commit
         run: |
