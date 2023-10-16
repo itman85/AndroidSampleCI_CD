@@ -95,3 +95,12 @@ lane :buildDebugAndroidTest do |options|
     flags: "--stacktrace"
   )
 end
+
+desc "Send slack message"
+lane :send_slack_message do |options|
+  slack(
+      message: options[:slack_message],
+      slack_url: options[:slack_hook],
+      default_payloads: []
+  )
+end
