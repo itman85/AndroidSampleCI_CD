@@ -1,4 +1,5 @@
 # AndroidSampleCI_CD
+This sample Android project is used to practice Github Actions CI/CD
 ## Setup fastlane 
  - Create a Gemfile in the root directory of your Android project
  - Then just run the following command: *sudo gem install fastlane -NV*
